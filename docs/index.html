@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>谷子趋势 — 2026-05-16</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f5f7;color:#1d1d1f;padding:24px}
+h1{font-size:22px;font-weight:700;margin-bottom:4px}
+.subtitle{font-size:13px;color:#6e6e73;margin-bottom:32px}
+h2{font-size:15px;font-weight:600;margin:36px 0 14px;display:flex;align-items:center;gap:8px}
+h2 .count{font-size:12px;color:#aeaeb2;font-weight:400}
+
+/* ── Product Trends ─────────────────────────────────────── */
+.trend-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.trend-card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.trend-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.trend-ip{font-size:15px;font-weight:600}
+.trend-char{font-size:12px;color:#6e6e73;margin-top:2px}
+.streak-dots{display:flex;gap:4px;padding-top:2px}
+.dot{width:10px;height:10px;border-radius:50%;background:#30b050}
+.trend-meta{font-size:12px;color:#6e6e73;margin-bottom:10px}
+.trend-meta strong{color:#1d1d1f}
+.trend-thumbs{display:flex;gap:6px;flex-wrap:wrap}
+.trend-thumbs img{width:72px;height:46px;object-fit:cover;border-radius:6px;background:#e5e5ea}
+.tag-prod{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;background:#edf7ed;color:#1a6b2b;margin-bottom:8px}
+
+/* ── Video cards ─────────────────────────────────────────── */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.vcard{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.vcard a{text-decoration:none;color:inherit;display:block}
+.vcard img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#e5e5ea}
+.vcard-body{padding:9px 11px 11px}
+.vtags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:5px}
+.tag{font-size:10px;font-weight:500;padding:2px 6px;border-radius:20px}
+.tag-ip{background:#e8f4fd;color:#1a6bbf}
+.tag-char{background:#fef3e2;color:#a05c00}
+.tag-vp{background:#edf7ed;color:#1a6b2b}
+.tag-new{background:#fff0f0;color:#c0392b}
+.tag-streak{background:#f0f0ff;color:#4040c0}
+.vtitle{font-size:12px;font-weight:500;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:6px}
+.vstats{font-size:11px;color:#6e6e73;display:flex;gap:8px}
+.stat-hot{color:#d1400d;font-weight:600}
+
+/* ── Drop-off ────────────────────────────────────────────── */
+.dropoff-list{display:flex;flex-direction:column;gap:8px}
+.dropoff-item{background:#fff;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.dropoff-item img{width:80px;height:50px;object-fit:cover;border-radius:6px;background:#e5e5ea;flex-shrink:0}
+.dropoff-info{flex:1;min-width:0}
+.dropoff-title{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dropoff-meta{font-size:11px;color:#6e6e73;margin-top:3px}
+.footer{margin-top:40px;font-size:12px;color:#aeaeb2;text-align:center}
+
+.stats-bar{display:flex;gap:24px;background:#fff;border-radius:10px;padding:12px 18px;margin-bottom:28px;box-shadow:0 1px 4px rgba(0,0,0,.08);font-size:13px}
+.stat-item{display:flex;flex-direction:column;gap:2px}
+.stat-label{color:#6e6e73;font-size:11px}
+.stat-value{font-weight:600;font-size:15px}
+.stat-warn{color:#c0392b}
+#gate{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:999}
+.gate-box{background:#fff;border-radius:16px;padding:40px;text-align:center;min-width:280px}
+.gate-box h2{font-size:18px;margin-bottom:8px}
+.gate-box p{font-size:13px;color:#6e6e73;margin-bottom:20px}
+.gate-box input{width:100%;padding:10px 14px;border:1px solid #d1d1d6;border-radius:8px;font-size:15px;margin-bottom:10px;outline:none}
+.gate-box input:focus{border-color:#1a6bbf}
+.gate-box button{width:100%;padding:11px;background:#1a6bbf;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer}
+.gate-box button:hover{background:#1558a0}
+#pw_err{color:#c0392b;font-size:13px;margin-top:6px;display:none}
+#main{display:none}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="gate-box">
+    <h2>谷子趋势日报</h2>
+    <p>请输入访问密码</p>
+    <input id="pw_input" type="password" placeholder="密码" autofocus>
+    <button onclick="_submit()">进入</button>
+    <div id="pw_err">密码错误，请重试</div>
+  </div>
+</div>
+<div id="main">
+<h1>谷子趋势日报</h1>
+<div class="subtitle">2026-05-16 · B站 · 近7天发布</div>
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-label">抓取视频</span><span class="stat-value">565</span></div>
+  <div class="stat-item"><span class="stat-label">已识别 IP</span><span class="stat-value">156</span></div>
+  <div class="stat-item"><span class="stat-label">未识别率</span><span class="stat-value stat-warn">72%</span></div>
+  <div class="stat-item"><span class="stat-label">产品趋势</span><span class="stat-value">6</span></div>
+  <div class="stat-item"><span class="stat-label">今日爆款</span><span class="stat-value">42</span></div>
+</div>
+
+<h2>📈 产品趋势 <span class="count">近30天 · 多位创作者同时出现的品类</span></h2>
+<div class="trend-grid"><div class="trend-card">
+<div class="trend-header">
+  <div>
+    <div class="trend-ip">时代少年团</div>
+    
+  </div>
+  <div class="streak-dots"><div class="dot"></div><div class="dot"></div></div>
+</div>
+<span class="tag-prod">棉花娃娃</span>
+<div class="trend-meta">
+  <strong>6 个爆款视频</strong> · 出现 2 天 · 累计播放 38.0K
+</div>
+<div class="trend-thumbs"><a href="https://www.bilibili.com/video/BV1HT516KE52" target="_blank"><img src="https://i1.hdslb.com/bfs/archive/8bb813e237a41e6239acae49175791529a52b066.jpg" loading="lazy"></a><a href="https://www.bilibili.com/video/BV1P1516gEye" target="_blank"><img src="https://i0.hdslb.com/bfs/archive/6999b605899debbcc01b0f2527b2ddeb0521c5c1.jpg" loading="lazy"></a><a href="https://www.bilibili.com/video/BV1iE516ZE8k" target="_blank"><img src="https://i1.hdslb.com/bfs/archive/d2c52f723b834787720a4b876274bfd65de80cba.jpg" loading="lazy"></a><a href="https://www.bilibili.com/video/BV1j7516bEcX" target="_blank"><img src="https://i0.hdslb.com/bfs/archive/b46b185871cd14974c2204347b9691abcd64557c.jpg" loading="lazy"></a></div>
+</div>
+<div class="trend-card">
+<div class="trend-header">
+  <div>
+    <div class="trend-ip">雀魂</div>
+    
+  </div>
+  <div class="streak-dots"><div class="dot"></div></div>
+</div>
+<span class="tag-prod">流沙麻将</span>
+<div class="trend-meta">
+  <strong>3 个爆款视频</strong> · 出现 1 天 · 累计播放 77.8K
+</div>
+<div class="trend-thumbs"><a href="https://www.bilibili.com/video/BV13W5C62EdG" target="_blank"><img src="https://i2.hdslb.com/bfs/archive/80e3897376b2ac9ac63ef6882b9e397cdb5956bd.jpg" loading="lazy"></a><a href="https://www.bilibili.com/video/BV16P5u6aE8s" target="_blank"><img src="https://i0.hdslb.com/bfs/archive/6a820f0b46b5d1a319d0f5fc13754db900ca18be.jpg" loading="lazy"></a><a href="https://www.bilibili.com/video/BV1dWRxBNEKQ" target="_blank"><img src="https://i0.hdslb.com/bfs/archive/41d99d2acb1d077800a8f12a2528b203e0d6f695.jpg" loading="lazy"></a></div>
+</div>
+<div class="trend-card">
+<div class="trend-header">
+  <div>
+    <div class="trend-ip">魔力卡</div>
+    
+  </div>
+  <div class="streak-dots"><div class="dot"></div></div>
+</div>
+<span class="tag-prod">相卡</span>
+<div class="trend-meta">
+  <strong>3 个爆款视频</strong> · 出现 1 天 · 累计播放 76.0K
+</div>
+<div class="trend-thumbs"><a href="https://www.bilibili.com/video/BV1Hu5m6kEab" target="_blank"><img src="https://i1.hdslb.com/bfs/archive/df9778e827f3208b727f921e151724222f56d723.jpg" loading="lazy"></a><a href="https://www.bilibili.com/video/BV1SA5M6VEvq" target="_blank"><img src="https://i1.hdslb.com/bfs/archive/f76d5214e323050489d505bd74467aa7a0ce8fb3.jpg" loading="lazy"></a><a href="https://www.bilibili.com/video/BV1yd5h6KESA" target="_blank"><img src="https://i1.hdslb.com/bfs/archive/f88969ac09c0a93d93c8c596d22f4c571ba51daa.jpg" loading="lazy"></a></div>
+</div>
+<div class="trend-card">
+<div class="trend-header">
+  <div>
+    <div class="trend-ip">鬼灭之刃</div>
+    
+  </div>
+  <div class="streak-dots"><div class="dot"></div><div class="dot"></div></div>
+</div>
+<span class="tag-prod">相卡</span>
+<div class="trend-meta">
+  <strong>2 个爆款视频</strong> · 出现 2 天 · 累计播放 79.6K
+</div>
+<div class="trend-thumbs"><a href="https://www.bilibili.com/video/BV13A5h6kEcV" target="_blank"><img src="https://i1.hdslb.com/bfs/archive/3742013e93f407c7d43979d10e37f79907f6fbfb.jpg" loading="lazy"></a><a href="https://www.bilibili.com/video/BV1Lk5x66EDo" target="_blank"><img src="https://i1.hdslb.com/bfs/archive/a918570ba74bf52b092777e67b375fda1c203d18.jpg" loading="lazy"></a></div>
+</div>
+<div class="trend-card">
+<div class="trend-header">
+  <div>
+    <div class="trend-ip">王者荣耀</div>
+    
+  </div>
+  <div class="streak-dots"><div class="dot"></div><div class="dot"></div></div>
+</div>
+<span class="tag-prod">相卡</span>
+<div class="trend-meta">
+  <strong>2 个爆款视频</strong> · 出现 2 天 · 累计播放 20.4K
+</div>
+<div class="trend-thumbs"><a href="https://www.bilibili.com/video/BV11t5t6ZEhU" target="_blank"><img src="https://i0.hdslb.com/bfs/archive/dd22331ea0ca13a54eae92fe2a75fa7c5a9acfa6.jpg" loading="lazy"></a></div>
+</div>
+<div class="trend-card">
+<div class="trend-header">
+  <div>
+    <div class="trend-ip">第五人格</div>
+    <div class="trend-char">杰克</div>
+  </div>
+  <div class="streak-dots"><div class="dot"></div></div>
+</div>
+<span class="tag-prod">卡牌</span>
+<div class="trend-meta">
+  <strong>2 个爆款视频</strong> · 出现 1 天 · 累计播放 125.9K
+</div>
+<div class="trend-thumbs"><a href="https://www.bilibili.com/video/BV1Wv5T6YEu1" target="_blank"><img src="https://i1.hdslb.com/bfs/archive/4f0d0bd6d4a80b9058e8aa71d2202a0446232375.jpg" loading="lazy"></a><a href="https://www.bilibili.com/video/BV1dU5T6XE9C" target="_blank"><img src="https://i0.hdslb.com/bfs/archive/dc514d997e79deddea43ac89d7cbf8c6289f7961.jpg" loading="lazy"></a></div>
+</div></div>
+<h2>🔥 爆款 <span class="count">（共 42 个视频）</span></h2><div class="video-grid"><div class="vcard"><a href="https://www.bilibili.com/video/BV1b65B68E2C" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/c29f895a230dde40e76daaa910b9bdf67ee6388c.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">小马宝莉</span><span class="tag tag-char">彩虹</span><span class="tag tag-vp">镭射票</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">不出彩虹枪不结束 什么颜色的镭射出场率最高！</div>
+<div class="vstats"><span class="stat-hot">⚡ 6.5K/hr</span><span>👁 120.5K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV14Q5Q68EY5" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/54e60aee847bbd1c72b13501e88705f11887d782.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">假面骑士</span><span class="tag tag-char">加布</span><span class="tag tag-vp">一番赏</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">[不收！！]日本中古店特别贴出告示：不收S.H.F 加布 惊焰软糖和S.H.F 生真</div>
+<div class="vstats"><span class="stat-hot">⚡ 2.0K/hr</span><span>👁 100.8K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1mm5M6VECR" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/1fda5949495d540a8e04d890f9b623b5f95d4eb4.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">小马宝莉</span><span class="tag tag-vp">相卡</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">我是一个研究生，喜欢二次元拆卡和盲盒，在直播间抽小马宝莉上瘾，6万奖学金花完还欠4万网贷，后来别人推荐我你视频</div>
+<div class="vstats"><span class="stat-hot">⚡ 2.0K/hr</span><span>👁 220.4K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1255g6CEDn" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/1ccbab1bf609b1742ff6ccd0f77fdd4f5e7be8fe.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">假面骑士</span><span class="tag tag-char">空我</span><span class="tag tag-vp">相卡</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">夜光空我？！拆朋友没有的特摄周边！必须赢他！</div>
+<div class="vstats"><span class="stat-hot">⚡ 1.5K/hr</span><span>👁 136.0K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1QSLu69ErR" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/eea0274233bf8b7da8e40a963331d76f32f294ad.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">FGO</span><span class="tag tag-vp">相卡</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【FGO】2026年六月份抽卡推荐，仅代表个人意见</div>
+<div class="vstats"><span class="stat-hot">⚡ 1.2K/hr</span><span>👁 16.1K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV13A5h6kEcV" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/3742013e93f407c7d43979d10e37f79907f6fbfb.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鬼灭之刃</span><span class="tag tag-vp">相卡</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">鬼灭之刃龙年相卡</div>
+<div class="vstats"><span class="stat-hot">⚡ 1.1K/hr</span><span>👁 44.9K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV13W5C62EdG" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/80e3897376b2ac9ac63ef6882b9e397cdb5956bd.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">雀魂</span><span class="tag tag-vp">流沙麻将</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【雀魂汪汪录】第383期 我曾经也是魂天</div>
+<div class="vstats"><span class="stat-hot">⚡ 915/hr</span><span>👁 62.1K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Vd5867E2N" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/4dd076649afbffc2f588d9f722a725270f8f4d8e.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">星铁</span><span class="tag tag-vp">亚克力立牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">我愿称之为星铁最有陪伴感的亚克力谷！【非商单】</div>
+<div class="vstats"><span class="stat-hot">⚡ 888/hr</span><span>👁 47.4K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1zwRQBLERa" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/398fa30a0bcb79eb25cce0706d4ce2df70f17960.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">罗小黑</span><span class="tag tag-char">小黑</span><span class="tag tag-vp">流沙麻将</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">猫是液体·罗小黑液体猫猫流麻</div>
+<div class="vstats"><span class="stat-hot">⚡ 739/hr</span><span>👁 123.0K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1dU5T6XE9C" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/dc514d997e79deddea43ac89d7cbf8c6289f7961.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">第五人格</span><span class="tag tag-char">杰克</span><span class="tag tag-vp">卡牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">有创意+高完成度 - 超期待的21点肉鸽爬塔《地狱黑杰克》正式版体验</div>
+<div class="vstats"><span class="stat-hot">⚡ 690/hr</span><span>👁 65.7K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Wv5T6YEu1" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/4f0d0bd6d4a80b9058e8aa71d2202a0446232375.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">第五人格</span><span class="tag tag-char">杰克</span><span class="tag tag-vp">卡牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">我觉得《地狱黑杰克》是一个很好玩的肉鸽卡牌游戏！</div>
+<div class="vstats"><span class="stat-hot">⚡ 657/hr</span><span>👁 60.2K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1GA5k6GEWB" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/27e3876ade07a0e86e99f8d1e956a294e0cf48a0.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">崩坏3</span><span class="tag tag-char">爱莉希雅</span><span class="tag tag-vp">亚克力立牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">『Lunar Grace』爱莉希雅：霁月婵娟 | 同人创作</div>
+<div class="vstats"><span class="stat-hot">⚡ 484/hr</span><span>👁 9.4K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1H75Q6XEZX" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/31007560aecf2a05233e2965f02ba1a84c4ac481.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">三国杀</span><span class="tag tag-vp">卡牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">三国杀花朝谱国色天香！依旧女将皮肤卡！依旧看花眼！依旧邀请！</div>
+<div class="vstats"><span class="stat-hot">⚡ 458/hr</span><span>👁 29.5K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Lt5S6MEVJ" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/1a98ae38439b0fea134c383794900253556014c0.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">宝可梦</span><span class="tag tag-vp">卡牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">宝可梦卡牌居然又出手办盲盒了？比上一弹还香？！</div>
+<div class="vstats"><span class="stat-hot">⚡ 453/hr</span><span>👁 27.9K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Du5d6yELj" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/ec3e9e1e60841354837395be10341ae9a584f121.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鬼灭之刃</span><span class="tag tag-char">善逸</span><span class="tag tag-vp">吧唧</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">到底谁是善逸手？！</div>
+<div class="vstats"><span class="stat-hot">⚡ 437/hr</span><span>👁 18.0K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Hu5m6kEab" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/df9778e827f3208b727f921e151724222f56d723.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">魔力卡</span><span class="tag tag-vp">相卡</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">「 魔力卡电子通行证」初次使用</div>
+<div class="vstats"><span class="stat-hot">⚡ 424/hr</span><span>👁 34.1K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1QYLg6sErp" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/09ece3ab6140b4aa158237b35d7a96eca97d6a0a.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">药屋少女的呢喃</span><span class="tag tag-char">猫猫</span><span class="tag tag-vp">流沙麻将</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">液体猫猫流麻教程</div>
+<div class="vstats"><span class="stat-hot">⚡ 407/hr</span><span>👁 5.7K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1EN5X6DEbE" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/9cac238bbd2241b1df268132cf4cbe1b23d56f8c.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">圣斗士星矢</span><span class="tag tag-char">星矢</span><span class="tag tag-vp">相卡</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">太欧了！你不许拆圣斗士星矢卡牌！！！</div>
+<div class="vstats"><span class="stat-hot">⚡ 367/hr</span><span>👁 10.6K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1yd5h6KESA" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/f88969ac09c0a93d93c8c596d22f4c571ba51daa.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">魔力卡</span><span class="tag tag-vp">相卡</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">「 魔力卡电子通行证」发货篇</div>
+<div class="vstats"><span class="stat-hot">⚡ 353/hr</span><span>👁 16.2K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1xY586AEBH" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/c143b0258b8d7a6552557fb709579aadca020f3d.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鬼灭之刃</span><span class="tag tag-vp">吧唧</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">鬼灭之刃龙年吧唧</div>
+<div class="vstats"><span class="stat-hot">⚡ 299/hr</span><span>👁 5.5K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Vb5L6zETX" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/085437d8b3c91de324f1ed0adac4cb40e6e56fd6.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">原神</span><span class="tag tag-vp">一番赏</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">在原神社区开眼的第三年，冷门厨强迫烫门厨必须当大额优惠券，还要嫌弃你不能膨胀</div>
+<div class="vstats"><span class="stat-hot">⚡ 264/hr</span><span>👁 38.1K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV11t5t6ZEhU" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/dd22331ea0ca13a54eae92fe2a75fa7c5a9acfa6.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">王者荣耀</span><span class="tag tag-vp">相卡</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">王者荣耀集换式卡牌峡谷争锋来啦！揭秘第一弹配置！！！</div>
+<div class="vstats"><span class="stat-hot">⚡ 252/hr</span><span>👁 19.4K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1kU516MEYV" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/16b2f11474149c26f7442cd41aa6de8edf819ec4.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">时代少年团</span><span class="tag tag-vp">棉花娃娃</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">萌翻了!演唱会vcr花絮掉落丨时代少年团广州演唱会「棉花娃娃变成真人啦」拍摄花絮</div>
+<div class="vstats"><span class="stat-hot">⚡ 251/hr</span><span>👁 17.5K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1SA5M6VEvq" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/f76d5214e323050489d505bd74467aa7a0ce8fb3.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">魔力卡</span><span class="tag tag-vp">相卡</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">「 魔力卡电子通行证」工厂测试篇</div>
+<div class="vstats"><span class="stat-hot">⚡ 234/hr</span><span>👁 25.7K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV197RdBSEHQ" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/c8840d310168e190bf0db20c303b47c91c980d3f.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">崩坏3</span><span class="tag tag-char">协奏频段</span><span class="tag tag-vp">镭射票</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">米哈游，这就是你所谓良心满满,12块一张协奏频段镭射票？什么垃…… 卧槽卧槽卧槽！【非商单】</div>
+<div class="vstats"><span class="stat-hot">⚡ 157/hr</span><span>👁 25.3K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1QU5v64EyE" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/87f45847b4a22d71eda354e0a3b36fe8caf9fdcd.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">奥特曼</span><span class="tag tag-char">赛文</span><span class="tag tag-vp">一番赏</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">关于赛文通贩SHF脸黑这件事。。。</div>
+<div class="vstats"><span class="stat-hot">⚡ 136/hr</span><span>👁 3.4K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1dWRxBNEKQ" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/41d99d2acb1d077800a8f12a2528b203e0d6f695.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">雀魂</span><span class="tag tag-vp">流沙麻将</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">「雀魂」同样的染手，同样的四暗刻单骑九万！重温经典一炮下去三管血！</div>
+<div class="vstats"><span class="stat-hot">⚡ 135/hr</span><span>👁 6.2K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1vC556gEZw" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/00e5c94580e184a8db1de390b7a9cebf6d43fc9c.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">崩坏星穹铁道</span><span class="tag tag-char">姬子</span><span class="tag tag-vp">棉花娃娃</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">姬子姐的孩子</div>
+<div class="vstats"><span class="stat-hot">⚡ 97/hr</span><span>👁 7.6K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV16P5u6aE8s" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/6a820f0b46b5d1a319d0f5fc13754db900ca18be.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">雀魂</span><span class="tag tag-vp">流沙麻将</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【中字】雀魂祭！职业雀士×名声优组队麻将对决</div>
+<div class="vstats"><span class="stat-hot">⚡ 90/hr</span><span>👁 9.5K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1P45q6nEj1" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/6ffe4c5a7c526777e6ef1f3b7c64718bb11de0b3.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鸣潮</span><span class="tag tag-char">尤诺</span><span class="tag tag-vp">吧唧</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">我敢说这都是最好看的尤诺！鸣潮KKC快闪品鉴！</div>
+<div class="vstats"><span class="stat-hot">⚡ 85/hr</span><span>👁 1.7K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1iE516ZE8k" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/d2c52f723b834787720a4b876274bfd65de80cba.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">时代少年团</span><span class="tag tag-vp">棉花娃娃</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【时代少年团】《棉花娃娃变成真人啦》正片+拍摄花絮完整版</div>
+<div class="vstats"><span class="stat-hot">⚡ 79/hr</span><span>👁 5.4K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1j7516bEcX" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/b46b185871cd14974c2204347b9691abcd64557c.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">时代少年团</span><span class="tag tag-vp">棉花娃娃</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【时代少年团】《棉花娃娃变成真人啦》演唱会VCR正片+拍摄花絮完整版</div>
+<div class="vstats"><span class="stat-hot">⚡ 72/hr</span><span>👁 6.1K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1KRRRBiEp7" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/dcca95ff847ea9516fffbcade339bfe35c1e340a.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">转生史莱姆</span><span class="tag tag-char">天素罗</span><span class="tag tag-vp">棉花娃娃</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">被抓个正着只好周末加班的天素罗</div>
+<div class="vstats"><span class="stat-hot">⚡ 62/hr</span><span>👁 9.4K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1HT516KE52" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/8bb813e237a41e6239acae49175791529a52b066.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">时代少年团</span><span class="tag tag-vp">棉花娃娃</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【时代少年团】《棉花娃娃变成真人啦》短片花絮完整版</div>
+<div class="vstats"><span class="stat-hot">⚡ 49/hr</span><span>👁 4.1K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1cD5V62Ep4" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/0b88879922080672a49be5e362053eb6a1c27986.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鬼灭之刃</span><span class="tag tag-vp">一番赏</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">各位谷店老板注意⚠️日本鬼灭之刃开始崩盘了！</div>
+<div class="vstats"><span class="stat-hot">⚡ 45/hr</span><span>👁 3.4K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV14bR9BvEhA" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/5ce0ef54e67340fd98a3616ace496ff6c0134f78.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">原神</span><span class="tag tag-vp">吧唧</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">「等一下…特殊款是可以这样出的吗？」原神 哥伦比娅 少女 新月的祝福系列 周边 徽章 吧唧 开箱</div>
+<div class="vstats"><span class="stat-hot">⚡ 42/hr</span><span>👁 7.0K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Y85P6uEtv" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/eec02bf7c52f3e2ab5d1b2674168b5b005fce63b.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">凡人修仙传</span><span class="tag tag-char">宋玉</span><span class="tag tag-vp">亚克力立牌</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">【真栗】真栗看宋玉手办：现在凡人周边只剩亚克力立牌，小绿瓶和青竹峰云剑了！</div>
+<div class="vstats"><span class="stat-hot">⚡ 41/hr</span><span>👁 4.2K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1xv5C6uEJu" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/b2201be9057ce0b6c53b879a4357b6674a54230c.png" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">电锯人</span><span class="tag tag-char">波比</span><span class="tag tag-vp">亚克力立牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">《波比游戏时间》全38个纸板立牌深度解析</div>
+<div class="vstats"><span class="stat-hot">⚡ 34/hr</span><span>👁 3.0K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Xn5n6JEZf" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/a1b5687558518af516e24f6085cea372230cdc5c.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">机动战士高达</span><span class="tag tag-char">巴巴托斯</span><span class="tag tag-vp">一番赏</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">[高达一番赏]万代4月25日上市  一番赏 高达铁血 LAST赏 胸像，HGIBO 高达巴巴托斯天狼座 铁血透明版</div>
+<div class="vstats"><span class="stat-hot">⚡ 31/hr</span><span>👁 4.3K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV13C5H6WEZK" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/f512a321729284dd33143a00e29c8f8dd46b72f9.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">星铁</span><span class="tag tag-char">昔涟</span><span class="tag tag-vp">亚克力立牌</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">星铁一番赏哪个最好看？！文件夹超绝反光！亚克力小赏永远的神！昔涟一番赏测评！</div>
+<div class="vstats"><span class="stat-hot">⚡ 30/hr</span><span>👁 4.2K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1hr576uExZ" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/4c7fff3afdf99594c52619ab66d6271f3ebabe83.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">三丽鸥</span><span class="tag tag-vp">一番赏</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">痛手机膜都有？还有三丽鸥没联名的东西吗？</div>
+<div class="vstats"><span class="stat-hot">⚡ 29/hr</span><span>👁 4.2K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1gz546aEP6" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/1ba821dc425207b7595901f3ba082c0f93125e25.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鬼灭之刃</span><span class="tag tag-vp">亚克力立牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">哈咯！下次别随便说话了哟拆aniplex鬼灭之刃毛绒盲抽和2025圣诞节立牌，毛绒真的好可爱啊啊啊，立牌能出蜜璃和透透吗？？</div>
+<div class="vstats"><span class="stat-hot">⚡ 14/hr</span><span>👁 1.9K</span></div>
+</div></a></div></div>
+<h2>⚡ 上升中 <span class="count">（共 16 个视频）</span></h2><div class="video-grid"><div class="vcard"><a href="https://www.bilibili.com/video/BV1r5Lg6qE6x" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/9c4be0e9bf5650490f300dcf53dda88d1ca3ae86.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">游戏王</span><span class="tag tag-vp">卡牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">SOD新人是游戏王？把出道封面做成卡牌？5月最強黑马，反差魅力直接拉满！</div>
+<div class="vstats"><span class="stat-hot">⚡ 608/hr</span><span>👁 7.0K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1LV5r61EWY" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/33c093eb940df51bbfc7af98a1a372177c6dfa09.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">宝可梦</span><span class="tag tag-vp">卡牌</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">宝可梦17.0首开就毕业？我不相信的！</div>
+<div class="vstats"><span class="stat-hot">⚡ 577/hr</span><span>👁 1.4K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV19SLu69EMJ" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/741c5c2b74b81a91472a8efabd00e164f21ffe1e.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">宝可梦</span><span class="tag tag-char">皮卡丘</span><span class="tag tag-vp">卡牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">2000元挑战宝可梦17.0拆卡！能开出皮卡丘大手绘么？ptcg简中宝可梦17.0星彩晶璃拆卡</div>
+<div class="vstats"><span class="stat-hot">⚡ 368/hr</span><span>👁 4.6K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1xn5v62Eze" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/36386f6067e5ee5e00214d5c3c8bda2bce1a1a7e.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">咒术回战</span><span class="tag tag-char">五条悟</span><span class="tag tag-vp">一番赏</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">飞起来给你一拳头！万代一番赏宣战布告系列B赏五条悟开箱！</div>
+<div class="vstats"><span class="stat-hot">⚡ 170/hr</span><span>👁 804</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1B45k6REWz" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/f071cc7c4e5d2a0bb13959ab5f71bde6b66af7e7.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">宝可梦</span><span class="tag tag-char">晶璃</span><span class="tag tag-vp">一番赏</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">宝可梦17.0星彩晶璃肥盒就位，今天是一发入魂呢？还是继续沉沦？你相信这个世界上有欧皇吗？</div>
+<div class="vstats"><span class="stat-hot">⚡ 112/hr</span><span>👁 630</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1BHLG66EtL" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/3b654864bfd7b6c550ac60cf589673e386dee7b0.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">原神</span><span class="tag tag-vp">吧唧</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">「又是被月神大人美哭的一天🌙」 原神 哥伦比娅 少女 立绘 终北的夜行诗系列 周边 立牌 徽章 吧唧 开箱</div>
+<div class="vstats"><span class="stat-hot">⚡ 105/hr</span><span>👁 1.1K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Tt5r6KECS" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/08aebca81758acb5ee0d52e1e0752a98385553bf.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">罗小黑</span><span class="tag tag-char">无限</span><span class="tag tag-vp">流沙麻将</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">朱孝天用打麻将回应F4“掀桌”，在线还原事件来龙去脉【无限超越班】</div>
+<div class="vstats"><span class="stat-hot">⚡ 87/hr</span><span>👁 997</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1r25R68EFy" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/a1272990a87c233f198dd262bf23c5e889fb18c5.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">家庭教师</span><span class="tag tag-vp">一番赏</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">《一番赏新品评价》5月16号家庭教师 指环争夺战 5款手办赏品没有混子，全是CP！《新品闲聊》</div>
+<div class="vstats"><span class="stat-hot">⚡ 74/hr</span><span>👁 1.5K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1br5B6fELT" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/d4bb3ad23c435b45f9ffef93df49c6ea5c710a23.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">转生史莱姆</span><span class="tag tag-char">天素罗</span><span class="tag tag-vp">棉花娃娃</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">无论何时何地都想陪着anon犬的天素罗</div>
+<div class="vstats"><span class="stat-hot">⚡ 72/hr</span><span>👁 2.2K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1R2L36eE6h" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/20fbdb880ff30fd08d7c61ea04d67439886fe2c4.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">恋与制作人</span><span class="tag tag-vp">吧唧</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【周边开箱】恋与制作人2025年双十一谷子</div>
+<div class="vstats"><span class="stat-hot">⚡ 46/hr</span><span>👁 387</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1zo5e6AEF1" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/fc46837340e6a69acdeada5eab73b8758de74b1f.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鬼灭</span><span class="tag tag-vp">吧唧</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">来B站出出鬼灭各种吧唧纸片娃娃谷子！！</div>
+<div class="vstats"><span class="stat-hot">⚡ 43/hr</span><span>👁 973</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1RM5q6YE8a" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/018e378582d48b15d9217c3efe5f983b02457180.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">明日方舟</span><span class="tag tag-vp">一番赏</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">卡游一番赏B赏重涂，，，这次原本是冲着明日方舟卡牌去的，，</div>
+<div class="vstats"><span class="stat-hot">⚡ 41/hr</span><span>👁 761</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1bh5a6GEKT" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/c65ef7eb63d2b33d34b5b924383af0fccf27ee5e.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">JOJO</span><span class="tag tag-vp">一番赏</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">JOJO一番赏群英汇聚，H赏LOGO摆件，第四部：不灭钻石，分享！</div>
+<div class="vstats"><span class="stat-hot">⚡ 29/hr</span><span>👁 931</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV177516bEBm" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/184f915ec632d36c123eab4ccdedd4a07f455bd6.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">海贼王</span><span class="tag tag-vp">一番赏</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">一番赏海贼王描绘的未来简单开箱</div>
+<div class="vstats"><span class="stat-hot">⚡ 23/hr</span><span>👁 1.6K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1NW5q6pEqb" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/369a4a6cec828d9fb087bda0e4ed027ee5a7a578.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鬼灭之刃</span><span class="tag tag-char">义勇</span><span class="tag tag-vp">吧唧</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">推义勇さん的我一点也“不累”（立志篇的少部分吧唧和贴纸展示，其实还有色纸和卡片海报）</div>
+<div class="vstats"><span class="stat-hot">⚡ 22/hr</span><span>👁 448</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Ah5q6mESs" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/6216173863201811c42234763266a62b62338dac.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">龙珠</span><span class="tag tag-char">悟空</span><span class="tag tag-vp">一番赏</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">龙珠一番赏编年史C赏超赛回眸悟空，犀利小眼神真不错，面雕没得说，但是做工，其实可以更细一些，挺推荐入的#龙珠 #一番赏 #手办</div>
+<div class="vstats"><span class="stat-hot">⚡ 21/hr</span><span>👁 740</span></div>
+</div></a></div></div>
+<h2>✅ 稳定款 <span class="count">（共 17 个视频）</span></h2><div class="video-grid"><div class="vcard"><a href="https://www.bilibili.com/video/BV1DJ5E6GEkS" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/642cd6e179d65f483641781079aa1633254d2119.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">小马宝莉</span><span class="tag tag-vp">卡牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">路边捡到最新版小马宝莉卡包，居然拆出最高卡位!</div>
+<div class="vstats"><span class="stat-hot">⚡ 279/hr</span><span>👁 43.7K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Ug5g6jEFm" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/ed83925b9537deedbbd821b906cf808cd95d6b93.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">小马宝莉</span><span class="tag tag-vp">卡牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">滑梯上捡到小马宝莉辉月11弹！新版卡牌也太华丽了！</div>
+<div class="vstats"><span class="stat-hot">⚡ 355/hr</span><span>👁 38.3K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Wg5768Emg" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/52b318701f07227324a8c68a7325952e78a04a69.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">宝可梦</span><span class="tag tag-vp">卡牌</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">又在赚？抢先偷跑宝可梦卡牌17.0！</div>
+<div class="vstats"><span class="stat-hot">⚡ 104/hr</span><span>👁 16.2K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1x9RRBTE8F" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/758109e22791e070f54d7adce12dd635f249b5f3.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">迪士尼</span><span class="tag tag-char">巴斯光年</span><span class="tag tag-vp">相卡</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">巴斯光年本人拆迪士尼洛卡纳玩具总动员新弹！！！</div>
+<div class="vstats"><span class="stat-hot">⚡ 91/hr</span><span>👁 13.7K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Lk5x66EDo" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/a918570ba74bf52b092777e67b375fda1c203d18.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鬼灭之刃</span><span class="tag tag-vp">相卡</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">鬼灭之刃20人大毒池！包烫又包推你受得了吗？</div>
+<div class="vstats"><span class="stat-hot">⚡ 100/hr</span><span>👁 11.9K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1495H62EsG" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/3f03216c11947d39b3b45f8ae6557e1ade7c816f.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">宝可梦</span><span class="tag tag-vp">相卡</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">偷跑宝可梦17.0还能出独占？这是什么运气？</div>
+<div class="vstats"><span class="stat-hot">⚡ 78/hr</span><span>👁 9.8K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1P1516gEye" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/6999b605899debbcc01b0f2527b2ddeb0521c5c1.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">时代少年团</span><span class="tag tag-vp">棉花娃娃</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【时代少年团】演唱会VCR《棉花娃娃变成真人啦》拍摄花絮</div>
+<div class="vstats"><span class="stat-hot">⚡ 47/hr</span><span>👁 4.0K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1LE516ZE4R" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/96c67ce1ed439622331c496fdafcf1154dc151a8.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">时代少年团</span><span class="tag tag-char">马嘉祺</span><span class="tag tag-vp">棉花娃娃</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【马嘉祺】260513 「棉花娃娃变成真人啦」vcr花絮  马嘉祺cut</div>
+<div class="vstats"><span class="stat-hot">⚡ 41/hr</span><span>👁 3.5K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1KT546WETY" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/1ac98bb0d8ecf975527bf48134022d22bb271883.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鬼灭</span><span class="tag tag-vp">吧唧</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">鬼灭吧唧大乱斗！一定要看到最后</div>
+<div class="vstats"><span class="stat-hot">⚡ 22/hr</span><span>👁 3.0K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Kj5g6VE6A" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/0f94e95fd92b0faee51ece5a13ecf2a500410612.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">深空</span><span class="tag tag-vp">棉花娃娃</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">深空新谷速拆 | 属于棉花和实用谷的时代到了</div>
+<div class="vstats"><span class="stat-hot">⚡ 28/hr</span><span>👁 2.6K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1yM546XEzY" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/273fc6ee596125cfd447114edfbe60052b9610e6.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">龙珠</span><span class="tag tag-char">比克</span><span class="tag tag-vp">一番赏</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">2026最强比克！龙珠 无名堂U系列 比克6比例纯享开箱！</div>
+<div class="vstats"><span class="stat-hot">⚡ 16/hr</span><span>👁 2.0K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1cPRdB8E1E" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/89ead04b197971adfdc2c6b092117eed763f1e08.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">龙珠</span><span class="tag tag-char">悟空</span><span class="tag tag-vp">一番赏</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【龙珠爆裂】悟空日爽玩五色红神</div>
+<div class="vstats"><span class="stat-hot">⚡ 11/hr</span><span>👁 1.8K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1AG5P6QEKN" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/a1bdd9422c71078234b5ee94329332ed236f7da0.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">葬送的芙莉莲</span><span class="tag tag-char">芙莉蓮</span><span class="tag tag-vp">一番赏</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">抽完大獎就送最後賞芙莉蓮胸像！老天竟然不打算放過我...敢挑戰就給我抽到最後一張吧~【yAn系列1070】</div>
+<div class="vstats"><span class="stat-hot">⚡ 18/hr</span><span>👁 1.8K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1YD5x6NE3j" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/65d27a237f7808fcb750ee2bef885849cd9f337b.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">海贼王</span><span class="tag tag-vp">一番赏</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">【B&amp;W】什么叫你一次抽到两个草帽团？海贼王396生日砖#5</div>
+<div class="vstats"><span class="stat-hot">⚡ 14/hr</span><span>👁 1.7K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1Mr5L6hE92" target="_blank">
+<img src="https://i0.hdslb.com/bfs/archive/ce5f720005dba35a6e6d362a0401fae31796ad68.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">锈湖</span><span class="tag tag-vp">色纸</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">【锈湖】发明反光色纸的真是个天才</div>
+<div class="vstats"><span class="stat-hot">⚡ 11/hr</span><span>👁 1.6K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1coRDBUEbQ" target="_blank">
+<img src="https://i1.hdslb.com/bfs/archive/bfced0d005c0ad1f5d3a8449940c078685b34cc9.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">鬼灭之刃</span><span class="tag tag-char">义勇</span><span class="tag tag-vp">吧唧</span><span class="tag tag-new">🆕 新上榜</span>
+</div>
+<div class="vtitle">vol.237｜拼盘吃到的一些可爱帅气义勇～富冈义勇专场谷子开箱！举手立牌｜柱展吧唧｜夏休亚克力！【购物分享vol.237】</div>
+<div class="vstats"><span class="stat-hot">⚡ 9/hr</span><span>👁 1.6K</span></div>
+</div></a></div>
+<div class="vcard"><a href="https://www.bilibili.com/video/BV1135Q6oEDV" target="_blank">
+<img src="https://i2.hdslb.com/bfs/archive/f004ff16c18c402a2a122260a97cc143a357d9bf.jpg" loading="lazy">
+<div class="vcard-body">
+<div class="vtags">
+  <span class="tag tag-ip">中二节奏</span><span class="tag tag-vp">流沙麻将</span><span class="tag tag-streak">📅 连续第2天</span>
+</div>
+<div class="vtitle">【中二节奏/Chunithm】YOUNITHM 流麻全球首杀</div>
+<div class="vstats"><span class="stat-hot">⚡ 30/hr</span><span>👁 1.5K</span></div>
+</div></a></div></div>
+<h2>📉 热度下降 <span class="count">昨天在榜，今天消失</span></h2><div class="dropoff-list"><div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV1Qw5y6SEZY" target="_blank">【PD/卡牌/卡游】卡游王者荣耀英雄万相卡趣影包第一弹开箱验货，听说最近卡游王者荣耀的卡挺火，我也来拆拆看！</a></div>
+  <div class="dropoff-meta">王者荣耀 ·  · 昨日分类：🔥 Breakout · 播放 1.1K</div>
+</div></div>
+<div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV1ah5i6ZEjg" target="_blank">和猫猫一起久违的放松一下</a></div>
+  <div class="dropoff-meta">药屋少女的呢喃 ·  · 昨日分类：🔥 Breakout · 播放 1.0K</div>
+</div></div>
+<div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV1pA5C6cEzu" target="_blank">蕾米莉亚手绘原画展示～</a></div>
+  <div class="dropoff-meta">东方Project ·  · 昨日分类：🔥 Breakout · 播放 1.0K</div>
+</div></div>
+<div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV1KWL36nEsk" target="_blank">三国杀魔周瑜眼中的曹操！成功得吃大小乔姐妹花</a></div>
+  <div class="dropoff-meta">三国杀 ·  · 昨日分类：🔥 Breakout · 播放 707</div>
+</div></div>
+<div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV1Fq5q6CE6R" target="_blank">【龙珠爆裂】经过半年的补强，11周年现状</a></div>
+  <div class="dropoff-meta">龙珠 ·  · 昨日分类：⚡ Accelerating · 播放 501</div>
+</div></div>
+<div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV1iTL36wEM1" target="_blank">【皇室战争】【皮卡锤】精英射手狂射17箭！</a></div>
+  <div class="dropoff-meta">皇室战争 ·  · 昨日分类：🔥 Breakout · 播放 264</div>
+</div></div>
+<div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV1G5L364EB5" target="_blank">三国杀神马超258</a></div>
+  <div class="dropoff-meta">三国杀 ·  · 昨日分类：🔥 Breakout · 播放 225</div>
+</div></div>
+<div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV1KV5k6vEtY" target="_blank">【魔力赏】15可抽雕像！Prime 1 Studio PRISMA WING 约会大作战 夜刀神十香 1/7手办是超神！</a></div>
+  <div class="dropoff-meta">约会大作战 ·  · 昨日分类：⚡ Accelerating · 播放 221</div>
+</div></div>
+<div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV1sj5k6YE3i" target="_blank">一番賞 一番くじ 機動戰士鋼彈 鐵血孤兒 MGSD 彩透版獵魔 這肯定要抽到!!全店買5抽送1抽 佛心店家!!!机动战士ガンダム GUNDAM</a></div>
+  <div class="dropoff-meta">鐵血孤兒 ·  · 昨日分类：⚡ Accelerating · 播放 206</div>
+</div></div>
+<div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV1VML36hEZ6" target="_blank">企鹅讨论【943987208】游戏王diy类似编号【GMR】卡片鉴赏</a></div>
+  <div class="dropoff-meta">游戏王 ·  · 昨日分类：🔥 Breakout · 播放 196</div>
+</div></div>
+<div class="dropoff-item">
+<div style="width:80px;height:50px;background:#e5e5ea;border-radius:6px"></div>
+<div class="dropoff-info">
+  <div class="dropoff-title"><a href="https://www.bilibili.com/video/BV15TL36wEQ3" target="_blank">三国杀移动版：不等半价了，直接原价合神司马懿动皮！</a></div>
+  <div class="dropoff-meta">三国杀 ·  · 昨日分类：🔥 Breakout · 播放 128</div>
+</div></div></div>
+
+<div class="footer">每日自动更新 · 2026-05-16</div>
+</div>
+<script>
+const _PW = "guzi2026";
+function _check() {
+  if (localStorage.getItem("guzi_auth") === _PW) { _show(); return; }
+  document.getElementById("gate").style.display = "flex";
+}
+function _submit() {
+  const v = document.getElementById("pw_input").value;
+  if (v === _PW) {
+    localStorage.setItem("guzi_auth", _PW);
+    document.getElementById("gate").style.display = "none";
+    _show();
+  } else {
+    document.getElementById("pw_err").style.display = "block";
+  }
+}
+function _show() { document.getElementById("main").style.display = "block"; }
+document.getElementById("pw_input").addEventListener("keydown", e => { if (e.key === "Enter") _submit(); });
+_check();
+</script>
+</body>
+</html>

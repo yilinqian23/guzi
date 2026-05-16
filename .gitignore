@@ -1,0 +1,16 @@
+# Sensitive / local-only files
+cookies.json
+anime_goods_intel.db
+
+# Logs and archives
+logs/
+reports/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Mac
+.DS_Store
