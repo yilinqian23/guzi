@@ -12,5 +12,9 @@ __pycache__/
 *.pyo
 .env
 
+# Internal dev docs
+CLAUDE.md
+requirements.txt
+
 # Mac
 .DS_Store
